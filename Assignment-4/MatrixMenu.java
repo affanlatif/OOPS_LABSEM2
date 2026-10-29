@@ -1,48 +1,176 @@
 import java.util.Scanner;
+
 public class MatrixMenu {
- static Scanner sc = new Scanner(System.in);
- static int[][] readMatrix(String name) {
-  System.out.print("Enter rows and columns of " + name + ": ");
-  int r = sc.nextInt(), c = sc.nextInt();
-  if (r <= 0 || c <= 0 || r > 20 || c > 20) { System.out.println("Invalid matrix dimensions."); return null; }
-  int[][] a = new int[r][c]; System.out.println("Enter matrix elements:");
-  for (int i=0;i<r;i++) for (int j=0;j<c;j++) a[i][j]=sc.nextInt();
-  return a;
- }
- static void display(int[][] a) {
-  if (a == null) { System.out.println("Matrix not created."); return; }
-  for (int[] row : a) { for (int value : row) System.out.print(value + "\t"); System.out.println(); }
- }
- static void add(int[][] a, int[][] b) {
-  if (a==null || b==null || a.length!=b.length || a[0].length!=b[0].length) { System.out.println("Addition not possible."); return; }
-  int[][] r=new int[a.length][a[0].length];
-  for(int i=0;i<a.length;i++) for(int j=0;j<a[0].length;j++) r[i][j]=a[i][j]+b[i][j];
-  System.out.println("Matrix Addition:"); display(r);
- }
- static void subtract(int[][] a, int[][] b) {
-  if (a==null || b==null || a.length!=b.length || a[0].length!=b[0].length) { System.out.println("Subtraction not possible."); return; }
-  int[][] r=new int[a.length][a[0].length];
-  for(int i=0;i<a.length;i++) for(int j=0;j<a[0].length;j++) r[i][j]=a[i][j]-b[i][j];
-  System.out.println("Matrix Subtraction:"); display(r);
- }
- static void multiply(int[][] a, int[][] b) {
-  if (a==null || b==null || a[0].length!=b.length) { System.out.println("Multiplication not possible."); return; }
-  int[][] r=new int[a.length][b[0].length];
-  for(int i=0;i<a.length;i++) for(int j=0;j<b[0].length;j++) for(int k=0;k<a[0].length;k++) r[i][j]+=a[i][k]*b[k][j];
-  System.out.println("Matrix Multiplication:"); display(r);
- }
- public static void main(String[] args) {
-  int[][] a=null,b=null; int choice;
-  do {
-   System.out.println("\n--- MATRIX MENU ---\n1. Create Matrices\n2. Display Matrices\n3. Matrix Addition\n4. Matrix Subtraction\n5. Matrix Multiplication\n6. Exit");
-   System.out.print("Enter choice: "); choice=sc.nextInt();
-   switch(choice) {
-    case 1: a=readMatrix("A"); b=readMatrix("B"); break;
-    case 2: System.out.println("Matrix A:"); display(a); System.out.println("Matrix B:"); display(b); break;
-    case 3: add(a,b); break; case 4: subtract(a,b); break; case 5: multiply(a,b); break;
-    case 6: System.out.println("Program Terminated!"); break; default: System.out.println("Invalid choice.");
-   }
-  } while(choice!=6);
-  sc.close();
- }
+    static Scanner sc = new Scanner(System.in);
+
+    static int[][] createMatrix() {
+        System.out.print("Enter number of rows: ");
+        int rows = sc.nextInt();
+        System.out.print("Enter number of columns: ");
+        int cols = sc.nextInt();
+
+        if (rows <= 0 || cols <= 0) {
+            System.out.println("Invalid matrix dimensions.");
+            return null;
+        }
+
+        int[][] matrix = new int[rows][cols];
+
+        System.out.println("Enter matrix elements:");
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+
+        return matrix;
+    }
+
+    static void displayMatrix(int[][] matrix) {
+        if (matrix == null) {
+            System.out.println("Matrix not created.");
+            return;
+        }
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                System.out.print(matrix[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    static void addMatrix(int[][] a, int[][] b) {
+        if (a == null || b == null) {
+            System.out.println("Please create both matrices first.");
+            return;
+        }
+
+        if (a.length != b.length || a[0].length != b[0].length) {
+            System.out.println("Addition not possible. Both matrices must have the same size.");
+            return;
+        }
+
+        int rows = a.length;
+        int cols = a[0].length;
+        int[][] result = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = a[i][j] + b[i][j];
+            }
+        }
+
+        System.out.println("Result of Addition:");
+        displayMatrix(result);
+    }
+
+    static void subtractMatrix(int[][] a, int[][] b) {
+        if (a == null || b == null) {
+            System.out.println("Please create both matrices first.");
+            return;
+        }
+
+        if (a.length != b.length || a[0].length != b[0].length) {
+            System.out.println("Subtraction not possible. Both matrices must have the same size.");
+            return;
+        }
+
+        int rows = a.length;
+        int cols = a[0].length;
+        int[][] result = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                result[i][j] = a[i][j] - b[i][j];
+            }
+        }
+
+        System.out.println("Result of Subtraction:");
+        displayMatrix(result);
+    }
+
+    static void multiplyMatrix(int[][] a, int[][] b) {
+        if (a == null || b == null) {
+            System.out.println("Please create both matrices first.");
+            return;
+        }
+
+        if (a[0].length != b.length) {
+            System.out.println("Multiplication not possible. Columns of first matrix must equal rows of second matrix.");
+            return;
+        }
+
+        int rows = a.length;
+        int cols = b[0].length;
+        int common = a[0].length;
+        int[][] result = new int[rows][cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                for (int k = 0; k < common; k++) {
+                    result[i][j] = result[i][j] + a[i][k] * b[k][j];
+                }
+            }
+        }
+
+        System.out.println("Result of Multiplication:");
+        displayMatrix(result);
+    }
+
+    public static void main(String args[]) {
+        int[][] matrix1 = null;
+        int[][] matrix2 = null;
+        int choice;
+
+        do {
+            System.out.println("\nMATRIX OPERATIONS");
+            System.out.println("1. Create and Display Matrix");
+            System.out.println("2. Matrix Addition");
+            System.out.println("3. Matrix Subtraction");
+            System.out.println("4. Matrix Multiplication");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println("\nEnter First Matrix:");
+                    matrix1 = createMatrix();
+                    if (matrix1 != null) {
+                        System.out.println("First Matrix:");
+                        displayMatrix(matrix1);
+                    }
+
+                    System.out.println("\nEnter Second Matrix:");
+                    matrix2 = createMatrix();
+                    if (matrix2 != null) {
+                        System.out.println("Second Matrix:");
+                        displayMatrix(matrix2);
+                    }
+                    break;
+
+                case 2:
+                    addMatrix(matrix1, matrix2);
+                    break;
+
+                case 3:
+                    subtractMatrix(matrix1, matrix2);
+                    break;
+
+                case 4:
+                    multiplyMatrix(matrix1, matrix2);
+                    break;
+
+                case 5:
+                    System.out.println("Program terminated!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 5);
+
+        sc.close();
+    }
 }
