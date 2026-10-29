@@ -1,14 +1,27 @@
+import java.util.Scanner;
+
 public class DataTypesOutput {
- public static void main(String[] args) {
-  char ch = 'A'; int number = 100; float decimal = 25.5f;
-  double value = 123.456; String name = "Java";
-  boolean status = true; long population = 123456789L;
-  System.out.println("Character: " + ch);
-  System.out.println("Integer: " + number);
-  System.out.println("Float: " + decimal);
-  System.out.println("Double: " + value);
-  System.out.println("String: " + name);
-  System.out.println("Boolean: " + status);
-  System.out.println("Long: " + population);
- }
+    public static void main(String args[]) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter an integer: ");
+        int num = sc.nextInt();
+
+        System.out.print("Enter a float: ");
+        float decimal = sc.nextFloat();
+
+        System.out.print("Enter a character: ");
+        char ch = sc.next().charAt(0);
+
+        System.out.print("Enter a boolean (true/false): ");
+        boolean value = sc.nextBoolean();
+
+        System.out.println("\nEntered Values:");
+        System.out.println("Integer = " + num);
+        System.out.println("Float = " + decimal);
+        System.out.println("Character = " + ch);
+        System.out.println("Boolean = " + value);
+
+        sc.close();
+    }
 }
