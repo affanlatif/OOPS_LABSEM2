@@ -1,51 +1,157 @@
-import java.util.Arrays;
 import java.util.Scanner;
+
 public class ArrayMenu {
- static int[] arr = new int[100]; static int size = 0;
- static void create(Scanner sc) {
-  System.out.print("Enter number of elements (0-100): "); int n = sc.nextInt();
-  if (n < 0 || n > arr.length) { System.out.println("Invalid array size."); return; }
-  size = n;
-  for (int i = 0; i < size; i++) { System.out.print("Enter element " + (i+1) + ": "); arr[i] = sc.nextInt(); }
- }
- static void display() {
-  if (size == 0) { System.out.println("Array is empty."); return; }
-  System.out.println("Array: " + Arrays.toString(Arrays.copyOf(arr, size)));
- }
- static void insert(Scanner sc) {
-  if (size == arr.length) { System.out.println("Array is full."); return; }
-  System.out.print("Enter position (1-" + (size+1) + "): "); int pos = sc.nextInt();
-  if (pos < 1 || pos > size+1) { System.out.println("Invalid position."); return; }
-  System.out.print("Enter element: "); int value = sc.nextInt();
-  for (int i = size; i >= pos; i--) arr[i] = arr[i-1];
-  arr[pos-1] = value; size++; System.out.println("Element inserted successfully.");
- }
- static void delete(Scanner sc) {
-  if (size == 0) { System.out.println("Array is empty."); return; }
-  System.out.print("Enter position to delete (1-" + size + "): "); int pos = sc.nextInt();
-  if (pos < 1 || pos > size) { System.out.println("Invalid position."); return; }
-  for (int i = pos-1; i < size-1; i++) arr[i] = arr[i+1];
-  size--; System.out.println("Element deleted successfully.");
- }
- static void search(Scanner sc) {
-  System.out.print("Enter element to search: "); int key = sc.nextInt();
-  for (int i = 0; i < size; i++) if (arr[i] == key) {
-   System.out.println("Element found at position " + (i+1)); return;
-  }
-  System.out.println("Element not found.");
- }
- static void sort() { Arrays.sort(arr, 0, size); System.out.println("Array sorted in ascending order."); }
- public static void main(String[] args) {
-  Scanner sc = new Scanner(System.in); int choice;
-  do {
-   System.out.println("\n--- ARRAY MENU ---\n1. Create Array\n2. Display Array\n3. Insert Element\n4. Delete Element\n5. Search Element\n6. Sort Array\n7. Exit");
-   System.out.print("Enter choice: "); choice = sc.nextInt();
-   switch (choice) {
-    case 1: create(sc); break; case 2: display(); break; case 3: insert(sc); break;
-    case 4: delete(sc); break; case 5: search(sc); break; case 6: sort(); break;
-    case 7: System.out.println("Program Terminated!"); break; default: System.out.println("Invalid choice.");
-   }
-  } while (choice != 7);
-  sc.close();
- }
+    static Scanner sc = new Scanner(System.in);
+
+    static void display(int arr[], int n) {
+        if (n == 0) {
+            System.out.println("Array is empty.");
+            return;
+        }
+
+        System.out.print("Array elements: ");
+        for (int i = 0; i < n; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    static int insert(int arr[], int n) {
+        System.out.print("Enter position: ");
+        int pos = sc.nextInt();
+
+        if (pos < 1 || pos > n + 1) {
+            System.out.println("Invalid position.");
+            return n;
+        }
+
+        System.out.print("Enter element: ");
+        int element = sc.nextInt();
+
+        for (int i = n; i >= pos; i--) {
+            arr[i] = arr[i - 1];
+        }
+
+        arr[pos - 1] = element;
+        System.out.println("Element inserted successfully.");
+        return n + 1;
+    }
+
+    static int delete(int arr[], int n) {
+        System.out.print("Enter position: ");
+        int pos = sc.nextInt();
+
+        if (pos < 1 || pos > n) {
+            System.out.println("Invalid position.");
+            return n;
+        }
+
+        for (int i = pos - 1; i < n - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+
+        System.out.println("Element deleted successfully.");
+        return n - 1;
+    }
+
+    static void search(int arr[], int n) {
+        System.out.print("Enter element to search: ");
+        int element = sc.nextInt();
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] == element) {
+                System.out.println("Element found at position " + (i + 1));
+                return;
+            }
+        }
+
+        System.out.println("Element not found.");
+    }
+
+    static void sort(int arr[], int n) {
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+
+        System.out.println("Array sorted successfully.");
+    }
+
+    public static void main(String args[]) {
+        int arr[] = new int[100];
+        int n = 0;
+        int choice;
+
+        do {
+            System.out.println("\nARRAY OPERATIONS");
+            System.out.println("1. Create and Display Array");
+            System.out.println("2. Insert Element");
+            System.out.println("3. Delete Element");
+            System.out.println("4. Search Element");
+            System.out.println("5. Sort Array");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter number of elements (0-100): ");
+                    int count = sc.nextInt();
+
+                    if (count < 0 || count > arr.length) {
+                        System.out.println("Invalid number of elements.");
+                        break;
+                    }
+
+                    n = count;
+                    System.out.println("Enter " + n + " elements:");
+                    for (int i = 0; i < n; i++) {
+                        arr[i] = sc.nextInt();
+                    }
+                    display(arr, n);
+                    break;
+
+                case 2:
+                    if (n == arr.length) {
+                        System.out.println("Array is full.");
+                    } else {
+                        n = insert(arr, n);
+                        display(arr, n);
+                    }
+                    break;
+
+                case 3:
+                    if (n == 0) {
+                        System.out.println("Array is empty.");
+                    } else {
+                        n = delete(arr, n);
+                        display(arr, n);
+                    }
+                    break;
+
+                case 4:
+                    search(arr, n);
+                    break;
+
+                case 5:
+                    sort(arr, n);
+                    display(arr, n);
+                    break;
+
+                case 6:
+                    System.out.println("Program terminated!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        } while (choice != 6);
+
+        sc.close();
+    }
 }
